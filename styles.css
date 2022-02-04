@@ -1,0 +1,384 @@
+/* Указываем box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Убираем внутренние отступы */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Убираем внешние отступы */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Выставляем основные настройки по-умолчанию для body */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class*/
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* Элементы a, у которых нет класса, сбрасываем до дефолтных стилей */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Упрощаем работу с изображениями */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Указываем понятную периодичность в потоке данных у article*/
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Наследуем шрифты для инпутов и кнопок */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Удаляем все анимации и переходы для людей, которые предпочитай их не использовать */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* конец сброса!!!!!!!!!!!!!!!!!!!!!!!! */
+header {
+  padding: 0 0 0 30px;
+  width: 100%;
+  height: 60px;
+  background-color: #444;
+  display: flex;
+  align-items: center;
+}
+
+body {
+  background-color: #282828;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+}
+
+main {
+  background-color: #222;
+  padding: 15px 30px 30px 30px;
+}
+
+.form {
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  align-content: center;
+  gap: 100px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.label p {
+  margin-left: 17px;
+}
+
+.input-container {
+  display: flex;
+  gap: 2px;
+}
+
+.form__btn-container {
+  display: flex;
+  flex-direction: column;
+  height: 40px;
+  gap: 2px;
+}
+
+.form__btn {
+  height: 19px;
+  border: none;
+  background-color: #444;
+  color: white;
+  transition: 80ms;
+}
+.form__btn:hover {
+  background-color: #666;
+}
+.form__btn:active {
+  background-color: #444;
+}
+
+.increase {
+  border-radius: 3px 15px 3px 3px;
+}
+.decrease {
+  border-radius: 3px 3px 15px 3px;
+}
+
+.input-number {
+  width: 200px;
+  height: 40px;
+  border-radius: 15px 5px 3px 15px;
+  padding-left: 17px;
+  border: none;
+  background-color: #444;
+  color: white;
+}
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.square {
+  background: url(./img/hsbGrad.jpg);
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  cursor: url(./img/cursor-default.png) 15 15, default;
+  margin-top: 10px;
+  width: 100%;
+  height: 25vh;
+  color: black;
+  border-radius: 15px;
+  user-select: none;
+  transition: 200ms;
+}
+
+.drag .square {
+  cursor: none;
+}
+
+.brightness-control {
+  background-color: #444;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  transition: 200ms;
+}
+
+.txt-color {
+  position: relative;
+
+  user-select: none;
+  pointer-events: none;
+  font-family: 'DM Mono', monospace;
+  width: max-content;
+  height: max-content;
+  top: -100%;
+  align-self: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+
+  /* курсор не перекрывает значение */
+  position: relative;
+  z-index: 100;
+}
+
+.drag {
+  cursor: none !important;
+}
+
+.pointer-container {
+  z-index: 1;
+  position: absolute;
+  left: -100px;
+  top: -150px;
+  user-select: none;
+  pointer-events: none;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pointer {
+  border: 2px solid #222;
+  border-radius: 100px;
+  height: 30px;
+  width: 30px;
+  transition: width 100ms, height 100ms;
+}
+.drag .pointer {
+  height: 60px;
+  width: 60px;
+}
+
+.rec-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  /* column-gap: 8px; */
+  height: 40vh;
+  margin-right: -10px;
+}
+
+.items {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  transition: background-color 0ms, width 200ms;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  width: 100%;
+  height: 100%;
+  background-color: #444;
+  border-radius: 10px;
+}
+
+.hide {
+  width: 0;
+  margin: 0;
+}
+
+.btn-container {
+  display: flex;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 110px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-count {
+  background-color: #aaa;
+  width: 40px;
+  height: 40px;
+  border-radius: 25px;
+  border: none;
+  transition: 150ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-count:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+.btn-count:active {
+  background-color: #888;
+}
+
+.btn-img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  user-select: none;
+  transition: 50ms;
+
+  fill: #222;
+}
+
+.btn-count:hover .btn-img {
+  width: 26px;
+  height: 26px;
+}
+
+.btn-count:active .btn-img {
+  width: 24px;
+  height: 24px;
+  fill: #111;
+}
+.test {
+  cursor: default;
+  width: 100px;
+  height: 100px;
+  background: red;
+}
+
+.test:hover {
+  cursor: pointer;
+  -moz-transition: cursor 500ms ease-in-out;
+  -o-transition: cursor 500ms ease-in-out;
+  -webkit-transition: cursor 500ms ease-in-out;
+  transition: cursor 500ms ease-in-out;
+}
+
+
+.label-switch {
+  display: flex;
+  align-content: center;
+}
+
+switch {
+  height: min-content;
+  width: min-content;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  position: relative;
+  width: 40px;
+  height: 20px;
+  -webkit-appearance: none;
+  outline: none;
+  background: #c6c6c6;
+  border-radius: 10px;
+  transition: .2s;
+  box-shadow: inset 0 0 5px rgba(0,0,0,.2);
+}
+
+input:checked[type="checkbox"] {
+  background: #40e551
+}
+
+input[type="checkbox"]:before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  background: #fff;
+  transition: .2s;
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,.2);
+}
+
+input:checked[type="checkbox"]:before {
+  left: 20px;
+}
