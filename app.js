@@ -1,3 +1,7 @@
+let red;
+let green;
+let blue;
+
 let hue;
 let saturation;
 //form
@@ -9,9 +13,9 @@ const sectorForm = document.getElementById('colorSector');
 const brightnessControl = document.querySelector('.brightness-control');
 let brightnessControlTrigger = false;
 
-stepForm.addEventListener('input', changeStep);
-sectorForm.addEventListener('input', changeColorWheelSector);
-brightnessForm.addEventListener('input', changeBrightness);
+stepForm.addEventListener('change', changeStep);
+sectorForm.addEventListener('change', changeColorWheelSector);
+brightnessForm.addEventListener('change', changeBrightness);
 
 const btnsChangeValue = document.querySelectorAll('.form__btn');
 btnsChangeValue.forEach(function (item) {
@@ -19,9 +23,6 @@ btnsChangeValue.forEach(function (item) {
 });
 
 function changeValueOnClick(e) {
-  console.log(hueDifference);
-  console.log(brightness);
-  console.log(hueDifference);
   e.preventDefault();
 
   input = e.currentTarget.parentElement.parentElement.children[0];
@@ -49,6 +50,8 @@ function changeStep() {
   if (stepForm.value > 360 / counter) {
     hueDifference = 360 / counter;
     stepForm.value = hueDifference;
+  } else if (stepForm.value < 0) {
+    stepForm.value = 0;
   }
   hueDifference = stepForm.value;
   sectorForm.value = counter * hueDifference;
@@ -56,7 +59,7 @@ function changeStep() {
 }
 
 function changeColorWheelSector() {
-  sectorForm.value = sectorForm.value < 360 ? sectorForm.value : 360;
+  sectorForm.value = sectorForm.value > 360 ? 360 : sectorForm.value < 0 ? 0 : sectorForm.value;
   hueDifference = sectorForm.value / counter;
   stepForm.value = hueDifference;
 
@@ -64,7 +67,7 @@ function changeColorWheelSector() {
 }
 
 function changeBrightness() {
-  brightnessForm.value = brightnessForm.value < 100 ? brightnessForm.value : 100;
+  brightnessForm.value = brightnessForm.value > 100 ? 100 : brightnessForm.value < 0 ? 0 : brightnessForm.value;
   brightness = brightnessForm.value;
   brightnessControl.style.backgroundColor = `#000`;
   brightnessControl.style.opacity = 1 - brightness / 100;
@@ -98,8 +101,11 @@ window.addEventListener('resize', function () {
 
 //events. start stop dragging!!!!!!!!!!!!!!!!!!!!!!!!!!
 square.addEventListener('mousedown', function (e) {
-  draging(e);
-  startDrag();
+  let hoverButton = document.querySelector('.copy-btn:hover');
+  if (!hoverButton) {
+    draging(e);
+    startDrag();
+  }
 });
 window.addEventListener('mouseup', function () {
   stopDrag();
@@ -113,11 +119,10 @@ function startDrag() {
   brightnessControl.style.opacity = 1 - brightness / 100;
 }
 function stopDrag() {
-  console.log('stopdrag');
   if (document.querySelector('body').classList.contains('drag')) {
     window.removeEventListener('mousemove', draging);
     document.querySelector('body').classList.remove('drag');
-    if (!brightnessControlTrigger) {
+    if (!brightnessControlTrigger && hideColorsCheckbox.checked) {
       brightnessControl.style.backgroundColor = `#444`;
       brightnessControl.style.opacity = 1;
     }
@@ -126,23 +131,41 @@ function stopDrag() {
 
 //square bright control mouseenter / mouseover
 const brightnessContainer = document.querySelector('.brightness');
-console.log(brightnessContainer);
-[brightnessControl, brightnessContainer].forEach((item) => {
-  item.addEventListener('mouseenter', function () {
-    brightnessControlTrigger = true;
-    brightnessControl.style.backgroundColor = `#000`;
-    brightnessControl.style.opacity = 1 - brightness / 100;
-  });
+const hideColorsCheckbox = document.getElementById('hideColors');
+
+hideColorsCheckbox.addEventListener('change', function () {
+  if (hideColorsCheckbox.checked) {
+    hideColors();
+    [brightnessControl, brightnessContainer].forEach((item) => {
+      item.addEventListener('mouseenter', showColors);
+    });
+    [brightnessControl, brightnessContainer].forEach((item) => {
+      item.addEventListener('mouseleave', hideColors);
+    });
+  } else {
+    showColors();
+    [brightnessControl, brightnessContainer].forEach((item) => {
+      item.removeEventListener('mouseenter', showColors);
+    });
+    [brightnessControl, brightnessContainer].forEach((item) => {
+      item.removeEventListener('mouseleave', hideColors);
+    });
+  }
 });
-[brightnessControl, brightnessContainer].forEach((item) => {
-  item.addEventListener('mouseleave', function () {
-    brightnessControlTrigger = false;
-    if (!document.querySelector('body').classList.contains('drag')) {
-      brightnessControl.style.backgroundColor = `#444`;
-      brightnessControl.style.opacity = 1;
-    }
-  });
-});
+
+function showColors() {
+  brightnessControlTrigger = true;
+  brightnessControl.style.backgroundColor = `#000`;
+  brightnessControl.style.opacity = 1 - brightness / 100;
+}
+
+function hideColors() {
+  brightnessControlTrigger = false;
+  if (!document.querySelector('body').classList.contains('drag')) {
+    brightnessControl.style.backgroundColor = `#444`;
+    brightnessControl.style.opacity = 1;
+  }
+}
 
 //drag
 function draging(e) {
@@ -173,18 +196,20 @@ function changeMainColor() {
   saturation = ((pointerY - squareTop) / squareHeight) * 50 + 50;
 
   let rgb = RGBfromHSV(hue, saturation, brightness);
-  document.querySelector('.txt-color').textContent = `HSB(${Math.floor(hue)},${Math.floor(saturation)}%,${Math.floor(
+  red = rgb[0];
+  green = rgb[1];
+  blue = rgb[2];
+  document.querySelector('.txt-color').innerHTML = `HSB(${Math.floor(hue)},${Math.floor(saturation)}%,${Math.floor(
     brightness
   )}%)`;
   document.querySelector('.pointer').style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-  // document.querySelector('.pointer').style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
   // document.querySelector('.pointer').style.backgroundColor = `hsl(${hue},${saturation}%,${brightness}%`;
 }
 
 function changeExtraColors() {
   const allItems = document.querySelectorAll('.items');
   allItems.forEach(function (items) {
-    if (!items.classList.contains('hide')) {
+    if (!items.classList.contains('hide-items')) {
       let itemList = items.querySelectorAll('.item');
       let extraMiddleHue = (items.id - 1) * hueDifference + hue;
       let extraHue = extraMiddleHue - 10 * (itemList.length - 1);
@@ -199,6 +224,12 @@ function changeExtraColors() {
   });
 }
 
+//copy hex
+const copyButton = document.querySelector('.copy-btn');
+copyButton.addEventListener('click', function () {
+  document.querySelector('.switch-txt').select();
+});
+
 //counf of itemS
 const minusBtn = document.querySelector('.decreaseCount');
 const plusBtn = document.querySelector('.increaseCount');
@@ -208,49 +239,44 @@ plusBtn.addEventListener('click', increaseCountOfItems);
 
 function decreaceCountOfItems() {
   if (counter > 1) {
-    deleteItem();
     counter--;
+    deleteItem(counter);
+    document.getElementById(counter + 1).classList.add('hide-items');
+    changeColorWheelSector();
   }
-  changeColorWheelSector();
-  // changeRangeSize();
-  pointer.style.left = `-50px`;
-  pointer.style.top = `-50px`;
 }
 
 function increaseCountOfItems() {
   if (counter < 6) {
-    createItem();
     counter++;
+    createItem();
+    changeColorWheelSector();
   }
-  changeColorWheelSector();
-  // changeRangeSize();
-  pointer.style.left = `-50px`;
-  pointer.style.top = `-50px`;
 }
 
 // container and items
 const mainContainer = document.querySelector('.rec-container');
 
-function deleteItem() {
-  item = document.getElementById(`${counter + 1}`);
-  mainContainer.removeChild(item);
-  document.getElementById(counter).classList.add('hide');
+function deleteItem(id) {
+  setTimeout(() => {
+    document.getElementById(id + 2).remove();
+  }, 200);
 }
 
 function createItem() {
   const item = document.createElement('div');
   item.classList.add('items');
-  item.classList.add('hide');
-  item.id = counter + 2;
+  item.classList.add('hide-items');
+  item.id = counter + 1;
   item.innerHTML = `
           <div class="item"></div>
   `;
   mainContainer.appendChild(item);
 
-  document.getElementById(counter + 1).classList.remove('hide');
+  document.getElementById(counter).classList.remove('hide-items');
 }
 
-//работа с HSV(HSB) более понятен человеческому глазу
+//работа с HSV(HSB) более понятен человеческому глазу чем HSL
 function RGBfromHSV(Hin, S, V) {
   let H = Hin % 360;
   const Hi = parseInt(H / 60);

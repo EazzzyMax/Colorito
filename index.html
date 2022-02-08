@@ -14,69 +14,72 @@
   </head>
   <body>
     <header>
-      <h1>Colorito</h1>
+      <img src="./img/logo.svg" alt="Colorito" width="128" height="26" />
     </header>
     <main>
-      <form class="form" maction="">
-        <label class="label-input">
-          <p>Разница цветов</p>
-          <div class="input-container">
-            <input class="input-number step" value="180" type="number" step="10" max="180" min="0" id="step" />
-            <div class="form__btn-container">
-              <button class="form__btn increase" id="increase-step">+</button>
-              <button class="form__btn decrease" id="decrease-step">-</button>
+      <form class="form">
+        <div class="label-container">
+          <label class="label-input">
+            <p>Разница цветов</p>
+            <div class="input-container">
+              <input class="input-number step" value="180" type="number" step="10" max="180" min="0" id="step" />
+              <div class="form__btn-container">
+                <button class="form__btn increase" id="increase-step">+</button>
+                <button class="form__btn decrease" id="decrease-step">-</button>
+              </div>
             </div>
-          </div>
-        </label>
-        <label class="label-input">
-          <p>Диапазон цветов</p>
-          <div class="input-container colorSector">
-            <input class="input-number" value="360" type="number" step="20" max="360" min="0" id="colorSector" />
-            <div class="form__btn-container">
-              <button class="form__btn increase" id="increase-sector">+</button>
-              <button class="form__btn decrease" id="decrease-sector">-</button>
+          </label>
+          <label class="label-input">
+            <p>Диапазон цветов</p>
+            <div class="input-container colorSector">
+              <input class="input-number" value="360" type="number" step="20" max="360" min="0" id="colorSector" />
+              <div class="form__btn-container">
+                <button class="form__btn increase" id="increase-sector">+</button>
+                <button class="form__btn decrease" id="decrease-sector">-</button>
+              </div>
             </div>
-          </div>
-        </label>
-        <label class="label-input">
-          <p>Яркость</p>
-          <div class="input-container brightness">
-            <input class="input-number" value="100" type="number" max="100" min="0" step="5" id="brightness" />
-            <div class="form__btn-container">
-              <button class="form__btn increase brightness" >+</button>
-              <button class="form__btn decrease brightness" >-</button>
+          </label>
+          <label class="label-input">
+            <p>Яркость</p>
+            <div class="input-container brightness">
+              <input class="input-number" value="100" type="number" max="100" min="0" step="5" id="brightness" />
+              <div class="form__btn-container">
+                <button class="form__btn increase brightness">+</button>
+                <button class="form__btn decrease brightness">-</button>
+              </div>
             </div>
-          </div>
-        </label>
-        <label class="label-switch" >
-          Весь цветовой круг
+          </label>
+        </div>
+        <label class="label-switch">
+          <p class="switch-txt">Скрывать цветовой круг</p>
           <switch>
-            <input type="checkbox" name="" id="">
+            <input type="checkbox" name="" id="hideColors" />
           </switch>
         </label>
       </form>
 
       <div class="square">
         <div class="brightness-control"></div>
-        <p class="txt-color">Color name</p>
+        <div class="color">
+          <p class="txt-color">Color Name</p>
+          <button class="copy-btn">
+            <img src="./img/copy.svg" alt="копировать" width="24" height="" />
+          </button>
+        </div>
         <div class="pointer-container">
           <div class="pointer"></div>
         </div>
       </div>
 
       <div class="rec-container">
+        <!-- вложенные item в items нужны для возможно реализации двумерного расположения подобранных цветов -->
         <div class="items" id="1">
-          <div class="item">
-          
-          </div>
+          <div class="item"></div>
         </div>
         <div class="items" id="2">
           <div class="item"></div>
-          <div class="item"></div>
-          <div class="item"></div>
         </div>
-        <div class="items hide" id="3">
-          <div class="item"></div>
+        <div class="items hide-items" id="3">
           <div class="item"></div>
         </div>
       </div>
