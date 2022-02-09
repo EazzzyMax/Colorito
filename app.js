@@ -226,9 +226,6 @@ function changeExtraColors() {
 
 //copy hex
 const copyButton = document.querySelector('.copy-btn');
-copyButton.addEventListener('click', function () {
-  document.querySelector('.switch-txt').select();
-});
 
 //counf of itemS
 const minusBtn = document.querySelector('.decreaseCount');
