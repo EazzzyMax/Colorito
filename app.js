@@ -9,7 +9,6 @@ stepForm.addEventListener('change', changeStep);
 sectorForm.addEventListener('change', changeColorWheelSector);
 brightnessForm.addEventListener('change', changeBrightness);
 
-
 //change step / brightness
 function changeStep() {
   if (stepForm.value > 360 / counter) {
@@ -181,7 +180,11 @@ function movePointer(e) {
   pointerX =
     e.clientX < squareLeft ? squareLeft : e.clientX > squareLeft + squareWidth ? squareLeft + squareWidth : e.clientX;
   pointerY =
-    e.clientY < squareTop ? squareTop : e.clientY > squareTop + squareHeight ? squareTop + squareHeight : e.clientY;
+    e.clientY < squareTop - window.pageYOffset
+      ? squareTop - window.pageYOffset
+      : e.clientY > squareTop + squareHeight - window.pageYOffset
+      ? squareTop + squareHeight - window.pageYOffset
+      : e.clientY;
 
   pointer.style.left = `${pointerX - pointerSize / 2}px`;
   pointer.style.top = `${pointerY + window.pageYOffset - pointerSize / 2}px`;
