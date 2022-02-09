@@ -179,7 +179,7 @@ main {
   .input-container {
     height: 30px;
   }
-  .form__btn-container{
+  .form__btn-container {
     flex-direction: row;
   }
   .form__btn {
@@ -193,7 +193,6 @@ main {
     border-radius: 3px 10px 10px 3px;
     order: 1;
   }
-  
 }
 
 .input-number {
@@ -241,6 +240,9 @@ switch {
 
   flex: 0 2 150px;
 }
+.low-brightness {
+  cursor: url(./img/cursor-forLowBrightness.png) 15 15, default;
+}
 
 .drag .square {
   cursor: none;
@@ -261,8 +263,6 @@ switch {
 
   display: flex;
 
-  /* user-select: none;
-  pointer-events: none; */
   font-family: 'DM Mono', monospace;
   width: max-content;
   height: max-content;
