@@ -256,7 +256,7 @@ switch {
   opacity: 0;
 }
 
-.color {
+.txt-color {
   position: relative;
 
   display: flex;
@@ -348,9 +348,7 @@ switch {
   transition-timing-function: ease-in;
   transition: background-color 0ms, width 200ms;
 
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  background-color: #444;
 }
 
 .item {

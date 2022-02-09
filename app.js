@@ -1,7 +1,3 @@
-let red;
-let green;
-let blue;
-
 let hue;
 let saturation;
 //form
@@ -10,12 +6,13 @@ let brightness = 100;
 const stepForm = document.getElementById('step');
 const brightnessForm = document.getElementById('brightness');
 const sectorForm = document.getElementById('colorSector');
-const brightnessControl = document.querySelector('.brightness-control');
-let brightnessControlTrigger = false;
 
 stepForm.addEventListener('change', changeStep);
 sectorForm.addEventListener('change', changeColorWheelSector);
 brightnessForm.addEventListener('change', changeBrightness);
+
+const brightnessControl = document.querySelector('.brightness-control');
+let brightnessControlTrigger = false;
 
 const btnsChangeValue = document.querySelectorAll('.form__btn');
 btnsChangeValue.forEach(function (item) {
@@ -25,16 +22,16 @@ btnsChangeValue.forEach(function (item) {
 function changeValueOnClick(e) {
   e.preventDefault();
 
-  input = e.currentTarget.parentElement.parentElement.children[0];
-
+  let input = e.currentTarget.parentElement.parentElement.children[0];
+  let value = input.value;
   const increaseIfTrue = e.currentTarget.classList.contains('increase');
-  let newValue = input.value;
+
   if (increaseIfTrue) {
-    newValue = parseInt(newValue) + parseInt(input.step);
+    value = parseInt(value) + parseInt(input.step);
   } else {
-    newValue = parseInt(newValue) - parseInt(input.step);
+    value = parseInt(value) - parseInt(input.step);
   }
-  input.value = newValue;
+  input.value = value;
 
   if (input.id == 'step') {
     changeStep();
@@ -48,8 +45,7 @@ function changeValueOnClick(e) {
 //change step / brightness
 function changeStep() {
   if (stepForm.value > 360 / counter) {
-    hueDifference = 360 / counter;
-    stepForm.value = hueDifference;
+    stepForm.value = 360 / counter;
   } else if (stepForm.value < 0) {
     stepForm.value = 0;
   }
@@ -95,8 +91,14 @@ window.addEventListener('resize', function () {
   squareLeft = square.offsetLeft;
   squareTop = square.offsetTop;
   pointerSize = pointer.offsetHeight;
-  squareWidth = square.offsetWidth - 1;
-  squareHeight = square.offsetHeight - 1;
+  squareWidth = square.offsetWidth;
+  squareHeight = square.offsetHeight;
+
+  //movePointer
+  pointerX = squareLeft + (squareWidth * hue) / 360;
+  pointerY = squareTop + (squareHeight * (saturation - 50)) / 50;
+  pointer.style.left = `${pointerX - pointerSize / 2}px`;
+  pointer.style.top = `${pointerY - pointerSize / 2}px`;
 });
 
 //events. start stop dragging!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -208,24 +210,14 @@ function changeMainColor() {
 
 function changeExtraColors() {
   const allItems = document.querySelectorAll('.items');
-  allItems.forEach(function (items) {
-    if (!items.classList.contains('hide-items')) {
-      let itemList = items.querySelectorAll('.item');
-      let extraMiddleHue = (items.id - 1) * hueDifference + hue;
-      let extraHue = extraMiddleHue - 10 * (itemList.length - 1);
-
-      itemList.forEach(function (item) {
-        let rgb = RGBfromHSV(extraHue, saturation, brightness);
-        item.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]}`;
-        extraHue += 20;
-      });
-      // child.style.backgroundColor = `hsl(${extraHue},${saturation}%,${brightness}%`;
+  allItems.forEach(function (item) {
+    if (!item.classList.contains('hide-items')) {
+      let extraHue = (item.id - 1) * hueDifference + hue;
+      let rgb = RGBfromHSV(extraHue, saturation, brightness);
+      item.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]}`;
     }
   });
 }
-
-//copy hex
-const copyButton = document.querySelector('.copy-btn');
 
 //counf of itemS
 const minusBtn = document.querySelector('.decreaseCount');
@@ -265,11 +257,7 @@ function createItem() {
   item.classList.add('items');
   item.classList.add('hide-items');
   item.id = counter + 1;
-  item.innerHTML = `
-          <div class="item"></div>
-  `;
   mainContainer.appendChild(item);
-
   document.getElementById(counter).classList.remove('hide-items');
 }
 
