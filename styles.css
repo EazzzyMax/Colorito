@@ -259,6 +259,8 @@ switch {
 }
 
 .txt-color {
+  user-select: none;
+  pointer-events: none;
   position: relative;
 
   display: flex;
