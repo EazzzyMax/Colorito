@@ -182,12 +182,6 @@ main {
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-@media (max-width: 785px) {
-  .input-number {
-    /* width: 100%; */
-    /* min-width: 100%; */
-  }
-}
 
 .label-switch {
   display: flex;
